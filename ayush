@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Grumantr Scholarship Examination - Registration</title>
+  <style>
+    :root{--bg:#f6f8fb;--card:#fff;--brand:#0b5fff;--muted:#555}
+    body{font-family:Inter,system-ui,Segoe UI,Arial; background:var(--bg); margin:0; padding:20px; color:#111}
+    .container{max-width:1100px;margin:0 auto}
+    header{display:flex;justify-content:space-between;align-items:center}
+    h1{margin:0;font-size:20px}
+    .grid{display:grid;grid-template-columns:1fr 400px;gap:18px;margin-top:18px}
+    .card{background:var(--card);padding:18px;border-radius:10px;box-shadow:0 6px 18px rgba(10,10,20,0.06)}
+    label{display:block;font-size:13px;margin-top:10px;color:var(--muted)}
+    input,select,button,textarea{width:100%;padding:10px;margin-top:6px;border-radius:8px;border:1px solid #e5e7eb;font-size:14px;box-sizing:border-box}
+    button{background:var(--brand);color:#fff;border:none;cursor:pointer}
+    .small{font-size:13px;color:var(--muted)}
+    .slot{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px;border-radius:8px;border:1px solid #eee;margin-top:8px}
+    .table{width:100%;border-collapse:collapse;margin-top:8px}
+    .table th,.table td{border:1px solid #f0f0f0;padding:8px;text-align:left;font-size:13px}
+    .actions{display:flex;gap:8px}
+    .muted{color:var(--muted)}
+    .notice{background:#fffbeb;padding:10px;border-radius:8px;margin-top:10px}
+    footer{margin-top:18px;text-align:center;color:var(--muted)}
+    .img-thumb{width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid #ddd}
+    .danger{background:#ffe9e9;color:#900}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Grumantr Scholarship Examination — Registration Portal</h1>
+      <div class="small">केवल कक्षा 9 के छात्र रजिस्टर कर पाएँगे</div>
+    </header>
+
+    <div class="grid">
+      <main class="card">
+        <h3>स्टूडेंट रजिस्ट्रेशन फॉर्म (Class 9 only)</h3>
+        <div class="small">सभी फ़ील्ड भरें। फोटो और आधार कार्ड अपलोड करें।</div>
+
+        <form id="regForm" style="margin-top:12px" enctype="multipart/form-data">
+          <label>पूरा नाम</label>
+          <input id="studentName" required placeholder="जैसे: अतुल शर्मा" />
+
+          <label>पिता का नाम</label>
+          <input id="fatherName" required placeholder="पिता का नाम" />
+
+          <label>माता का नाम</label>
+          <input id="motherName" required placeholder="माता का नाम" />
+
+          <label>स्कूल का नाम</label>
+          <input id="schoolName" required placeholder="स्कूल का नाम" />
+
+          <label>पूरा पता</label>
+          <textarea id="address" rows="2" required placeholder="पता"></textarea>
+
+          <label>कक्षा</label>
+          <select id="studentClass" required>
+            <option value="">कक्षा चुनें</option>
+            <option value="9">9वीं</option>
+            <option value="other">अन्य</option>
+          </select>
+
+          <label>ईमेल</label>
+          <input id="studentEmail" type="email" required placeholder="example@mail.com" />
+
+          <label>फोन</label>
+          <input id="studentPhone" placeholder="+91-..." />
+
+          <label>पासवर्ड (Login के लिए)</label>
+          <input id="studentPassword" type="password" minlength="6" required placeholder="कम से कम 6 अक्षर" />
+
+          <label>फ़ोटो (पासपोर्ट साइज)</label>
+          <input id="photoInput" type="file" accept="image/*" required />
+          <div id="photoPreview" style="margin-top:8px"></div>
+
+          <label>आधार कार्ड (PDF या Image)</label>
+          <input id="aadhaarInput" type="file" accept="image/*,.pdf" required />
+          <div id="aadhaarPreview" style="margin-top:8px" class="small muted"></div>
+
+          <button type="submit" style="margin-top:12px">रजिस्ट्रेशन सबमिट करें</button>
+          <div id="regMsg" class="small" style="margin-top:8px"></div>
+        </form>
+
+        <section style="margin-top:18px">
+          <h4>रजिस्ट्रेशन रिकॉर्ड (लोकल)</h4>
+          <table class="table" id="regsTable">
+            <thead><tr><th>कोड</th><th>नाम</th><th>स्कूल</th><th>फोन/ईमेल</th><th>फ़ोटो</th><th>आधार</th><th>स्थिति</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </section>
+
+      </main>
+
+      <aside class="card">
+        <h3>एडमिन पैनल</h3>
+        <div class="small">एडमिन पासवर्ड डालें (डेमो)</div>
+        <input id="adminPass" type="password" placeholder="Admin password" />
+        <button id="adminLogin" style="margin-top:8px">साइन इन</button>
+
+        <div id="adminArea" style="display:none;margin-top:12px">
+          <h4>एडमिन एक्शन्स</h4>
+          <div class="small">यहाँ आप सभी रजिस्ट्रेशन देख सकते हैं, CSV एक्सपोर्ट कर सकते हैं और रिकॉर्ड हटा सकते हैं।</div>
+
+          <div style="margin-top:10px">
+            <button id="exportCsv">CSV में एक्सपोर्ट करें</button>
+            <button id="downloadAllFiles">सभी फ़ाइलें डाउनलोड (ZIP नहीं)</button>
+          </div>
+
+          <div style="margin-top:10px">
+            <button id="clearData" class="danger">सभी डेटा हटाएँ</button>
+          </div>
+
+          <div style="margin-top:12px">
+            <h4>कुल रजिस्ट्रेशन: <span id="totalRegs">0</span></h4>
+            <div id="adminRegsList" style="max-height:300px;overflow:auto;margin-top:8px"></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="small">यह एक लोकल डेमो पोर्टल है। मैं इसे सर्वर + डेटाबेस के साथ भी कॉन्फ़िगर कर दूँगा।</footer>
+  </div>
+
+<script>
+// Local demo app for Grumantr Scholarship Examination
+const LS_KEY = 'grumantr_scholar_v1';
+function loadState(){
+  const raw = localStorage.getItem(LS_KEY);
+  return raw ? JSON.parse(raw) : { regs: [] };
+}
+function saveState(s){ localStorage.setItem(LS_KEY, JSON.stringify(s)); }
+let state = loadState();
+
+function uid(prefix='ID'){return prefix+Math.random().toString(36).slice(2,9).toUpperCase();}
+
+function dataURLfromFile(file, maxWidth=600){
+  return new Promise((res,rej)=>{
+    if(!file) return res(null);
+    const reader = new FileReader();
+    reader.onload = e=>{
+      // if image and need resizing -> try to resize
+      if(file.type.startsWith('image/')){
+        const img = new Image(); img.onload = ()=>{
+          const canvas = document.createElement('canvas');
+          const scale = Math.min(1, maxWidth / img.width);
+          canvas.width = img.width * scale; canvas.height = img.height * scale;
+          const ctx = canvas.getContext('2d'); ctx.drawImage(img,0,0,canvas.width,canvas.height);
+          res(canvas.toDataURL('image/jpeg',0.8));
+        };
+        img.onerror = ()=> res(e.target.result);
+        img.src = e.target.result;
+      } else {
+        // non-image (pdf) keep base64
+        res(e.target.result);
+      }
+    };
+    reader.onerror = rej;
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderRegs(){
+  const tbody = document.querySelector('#regsTable tbody'); tbody.innerHTML='';
+  state.regs.forEach(r=>{
+    const tr = document.createElement('tr');
+    const photoHtml = r.photoData ? `<img src="${r.photoData}" class="img-thumb" />` : '';
+    const aadhaarHtml = r.aadhaarName ? `<a href="#" data-id="${r.id}" class="viewAad">View</a>` : '';
+    tr.innerHTML = `<td>${r.code}</td><td>${r.name}</td><td>${r.school}</td><td>${r.phone||''}<br>${r.email||''}</td><td>${photoHtml}</td><td>${aadhaarHtml}</td><td>${r.status}</td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('totalRegs').textContent = state.regs.length;
+}
+
+renderRegs();
+
+// previews
+const photoInput = document.getElementById('photoInput');
+photoInput.addEventListener('change', async (e)=>{
+  const f = e.target.files[0];
+  if(!f) return; if(f.size > 2*1024*1024){ alert('Photo size should be <= 2MB'); photoInput.value=''; return; }
+  const data = await dataURLfromFile(f,400);
+  document.getElementById('photoPreview').innerHTML = `<img src="${data}" class="img-thumb" /> <div class="small">${f.name} (${Math.round(f.size/1024)} KB)</div>`;
+});
+
+const aadInput = document.getElementById('aadhaarInput');
+aadInput.addEventListener('change', async (e)=>{
+  const f = e.target.files[0];
+  if(!f) return; if(f.size > 4*1024*1024){ alert('Aadhaar file should be <= 4MB'); aadInput.value=''; return; }
+  document.getElementById('aadhaarPreview').textContent = `${f.name} (${Math.round(f.size/1024)} KB)`;
+});
+
+// registration submit
+document.getElementById('regForm').addEventListener('submit', async (ev)=>{
+  ev.preventDefault();
+  const msgEl = document.getElementById('regMsg'); msgEl.textContent='';
+  const name = document.getElementById('studentName').value.trim();
+  const father = document.getElementById('fatherName').value.trim();
+  const mother = document.getElementById('motherName').value.trim();
+  const school = document.getElementById('schoolName').value.trim();
+  const address = document.getElementById('address').value.trim();
+  const studentClass = document.getElementById('studentClass').value;
+  const email = document.getElementById('studentEmail').value.trim();
+  const phone = document.getElementById('studentPhone').value.trim();
+  const password = document.getElementById('studentPassword').value;
+  const photoFile = document.getElementById('photoInput').files[0];
+  const aadFile = document.getElementById('aadhaarInput').files[0];
+
+  if(studentClass !== '9') { msgEl.textContent = 'केवल 9वीं कक्षा के छात्र रजिस्टर कर सकते हैं।'; return; }
+  if(!name || !father || !mother || !school || !address || !email || !password || !photoFile || !aadFile){ msgEl.textContent='कृपया सभी आवश्यक फ़ील्ड भरें।'; return; }
+  // Aadhaar basic check: 12 digits in filename or user not enforced; we will warn if filename doesn't contain 12 digits
+  const aadName = aadFile.name;
+  const aadDigits = aadName.match(/(\d{12})/);
+  if(!aadDigits){ if(!confirm('आधार फ़ाइल के नाम में 12 अंक नहीं दिखे। क्या आप जारी रखना चाहते हैं?')) return; }
+
+  // process files
+  msgEl.textContent = 'फ़ाइलें अपलोड कर रहे हैं...';
+  const photoData = await dataURLfromFile(photoFile,600);
+  const aadData = await dataURLfromFile(aadFile,1200);
+
+  const code = uid('GRM');
+  const reg = { id: uid('R'), code, name, father, mother, school, address, class:'9', email, phone, password, photoName:photoFile.name, photoData, aadhaarName: aadFile.name, aadhaarData: aadData, status:'submitted', createdAt: new Date().toISOString() };
+  state.regs.push(reg); saveState(state); renderRegs();
+  msgEl.innerHTML = `रजिस्ट्रेशन सफल! आपका कोड: <strong>${code}</strong>`;
+  document.getElementById('regForm').reset(); document.getElementById('photoPreview').innerHTML=''; document.getElementById('aadhaarPreview').textContent='';
+});
+
+// admin login
+document.getElementById('adminLogin').addEventListener('click', ()=>{
+  const pass = document.getElementById('adminPass').value;
+  // demo admin password: grumantrAdmin
+  if(pass === 'grumantrAdmin'){ document.getElementById('adminArea').style.display='block'; document.getElementById('adminPass').value=''; renderAdminArea(); }
+  else alert('गलत पासवर्ड');
+});
+
+function renderAdminArea(){
+  const wrap = document.getElementById('adminRegsList'); wrap.innerHTML='';
+  state.regs.forEach(r=>{
+    const d = document.createElement('div'); d.className='card'; d.style.marginBottom='8px';
+    d.innerHTML = `<strong>${r.name} (${r.code})</strong><div class='small'>${r.school} — ${r.phone||''} / ${r.email||''}</div>
+      <div style='margin-top:6px'><img src='${r.photoData}' class='img-thumb' /> <a href='#' data-id='${r.id}' class='viewAad'>View Aadhaar</a></div>
+      <div style='margin-top:6px' class='small'>Status: ${r.status}</div>
+      <div style='margin-top:6px'><button data-id='${r.id}' class='markVerified'>Mark Verified</button><button data-id='${r.id}' class='deleteReg' style='margin-left:8px'>Delete</button></div>`;
+    wrap.appendChild(d);
+  });
+
+  // attach actions
+  document.querySelectorAll('.markVerified').forEach(b=>b.addEventListener('click', (e)=>{
+    const id = e.target.getAttribute('data-id'); const reg = state.regs.find(r=>r.id===id); if(reg){ reg.status='verified'; saveState(state); renderRegs(); renderAdminArea(); }
+  }));
+  document.querySelectorAll('.deleteReg').forEach(b=>b.addEventListener('click', (e)=>{
+    const id = e.target.getAttribute('data-id'); if(confirm('रजिस्ट्रेशन हटाएँ?')){ state.regs = state.regs.filter(r=>r.id!==id); saveState(state); renderRegs(); renderAdminArea(); }
+  }));
+  document.querySelectorAll('.viewAad').forEach(a=>a.addEventListener('click',(e)=>{ e.preventDefault(); const id = e.target.getAttribute('data-id'); const reg = state.regs.find(r=>r.id===id); if(reg){ const w = window.open(); w.document.write('<title>Aadhaar</title>'); if(reg.aadhaarData.startsWith('data:application/pdf')){ w.document.write('<iframe src="'+reg.aadhaarData+'" width="100%" height="600px"></iframe>'); } else { w.document.write('<img src="'+reg.aadhaarData+'" style="max-width:100%"/>'); } } }));
+}
+
+// export csv
+function exportToCsv(filename, rows) {
+  if(!rows || !rows.length){ alert('कोई रिकॉर्ड नहीं'); return; }
+  const keys = ['code','name','father','mother','school','address','class','email','phone','photoName','aadhaarName','status','createdAt'];
+  const lines = [keys.join(',')].concat(rows.map(r=> keys.map(k=> '"'+String(r[k]||'').replace(/"/g,'""')+'"').join(',')));
+  const blob = new Blob([lines.join('\n')], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = filename; a.click(); URL.revokeObjectURL(url);
+}
+
+document.getElementById('exportCsv').addEventListener('click', ()=>{
+  const rows = state.regs.map(r=>({ code:r.code, name:r.name, father:r.father, mother:r.mother, school:r.school, address:r.address, class:r.class, email:r.email, phone:r.phone, photoName:r.photoName, aadhaarName:r.aadhaarName, status:r.status, createdAt:r.createdAt }));
+  exportToCsv('grumantr_registrations.csv', rows);
+});
+
+// download all files: open each photo and Aadhaar in new tabs (manual)
+document.getElementById('downloadAllFiles').addEventListener('click', ()=>{
+  if(!state.regs.length){ alert('कोई फ़ाइलें नहीं'); return; }
+  state.regs.forEach(r=>{ if(r.photoData){ const w = window.open(); w.document.write('<img src="'+r.photoData+'" style="max-width:100%"/><div>'+r.photoName+'</div>'); } if(r.aadhaarData){ const w2 = window.open(); if(r.aadhaarData.startsWith('data:application/pdf')){ w2.document.write('<iframe src="'+r.aadhaarData+'" width="100%" height="600px"></iframe>'); } else { w2.document.write('<img src="'+r.aadhaarData+'" style="max-width:100%"/><div>'+r.aadhaarName+'</div>'); } } });
+});
+
+// clear data
+document.getElementById('clearData').addEventListener('click', ()=>{
+  if(confirm('सुनिश्चित करें: सभी रिकॉर्ड और फ़ाइलें हट जाएँगी। जारी रखें?')){ state = { regs:[] }; saveState(state); renderRegs(); document.getElementById('adminRegsList').innerHTML=''; }
+});
+
+</script>
+</body>
+</html>
